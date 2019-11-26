@@ -1,6 +1,6 @@
 <html>
 <body>
-<button onclick="play()">play</button>
+<button onclick="play()">play1</button>
 <script>
   var AudioContext = window.AudioContext // Default
     || window.webkitAudioContext // Safari and old versions of Chrome
@@ -11,7 +11,7 @@
     alert(ctx);
     let audio;
 
-    fetch("./music.mp3")
+    window.fetch("./music.mp3")
     .then(data => data.arrayBuffer())
     .then(arrayBuffer => ctx.decodeAudioData(arrayBuffer))
     .then(decodedAudio => {
