@@ -1,3 +1,8 @@
+var AudioContext = window.AudioContext // Default
+    || window.webkitAudioContext // Safari and old versions of Chrome
+    || false; 
+
+if (AudioContext) {
 const ctx = new AudioContext();
 let audio;
 
@@ -16,3 +21,6 @@ fetch("./music.mp3")
   }
 
   window.addEventListener("mousedown", play)
+} else {
+    alert("false");
+}
