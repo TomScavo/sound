@@ -1,15 +1,18 @@
 <html>
 <body>
-<button onclick="play()">play1</button>
+    <button id="btn" style="position: relative; left: 50%; top: 50%; padding: 20px 40px; border-radius: 20px; font-size: 20px">播放</button>
 <script>
   var AudioContext = window.AudioContext // Default
     || window.webkitAudioContext // Safari and old versions of Chrome
     || false; 
 
     const ctx = new AudioContext();
-
-    alert(ctx);
     let audio;
+    let isPlay = false;
+    let playSound = null;
+    const btn = document.getElementById("btn");
+    btn.onclick = handleButtonClick;
+
 
     function decodeCallback(decodedAudio) {
         audio = decodedAudio;
@@ -20,10 +23,24 @@
     .then(arrayBuffer => ctx.decodeAudioData(arrayBuffer, decodeCallback));
 
     function play() {
-        const playSound = ctx.createBufferSource();
+        isPlay = true;
+        btn.innerText = "暂停";
+        playSound = ctx.createBufferSource();
         playSound.buffer = audio;
         playSound.connect(ctx.destination);
         playSound.start(ctx.currentTime);
+    }
+
+    function stop() {
+        isPlay = false;
+        btn.innerText = "播放";
+        console.log(playSound)
+        playSound && playSound.stop(0);
+    }
+
+    function handleButtonClick() {
+        console.log(isPlay);
+        isPlay ? stop() : play();
     }
 
 </script>
