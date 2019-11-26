@@ -20,7 +20,6 @@ fetch("./music.mp3")
       playSound.start(ctx.currentTime);
   }
 
-  window.addEventListener("mousedown", play)
 } else {
     alert("false");
 }
