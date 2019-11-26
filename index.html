@@ -1,29 +1,44 @@
 <html>
 <body>
-<button onclick="play()">play1</button>
+        <button id="play">Yodel!</button>
 <script>
-  var AudioContext = window.AudioContext // Default
-    || window.webkitAudioContext // Safari and old versions of Chrome
-    || false; 
-
-    const ctx = new AudioContext();
-
-    alert(ctx);
-    let audio;
-
-    window.fetch("./music.mp3")
-    .then(data => data.arrayBuffer())
-    .then(arrayBuffer => ctx.decodeAudioData(arrayBuffer))
-    .then(decodedAudio => {
-        audio = decodedAudio;
-    });
-
-    function play() {
-        const playSound = ctx.createBufferSource();
-        playSound.buffer = audio;
-        playSound.connect(ctx.destination);
-        playSound.start(ctx.currentTime);
+  (function () {
+    
+    if('AudioContext' in window || 'webkitAudioContext' in window) {  
+      // Check for the web audio API. Safari requires the webkit prefix.
+  
+  
+    const URL = 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/Yodel_Sound_Effect.mp3';
+      
+    var AudioContext = window.AudioContext || window.webkitAudioContext;
+    var context = new AudioContext(); // Make it crossbrowser    
+        
+    const playButton = document.querySelector('#play');
+      
+    let yodelBuffer;
+  
+    window.fetch(URL)
+  .then(response => response.arrayBuffer())
+  .then(arrayBuffer => context.decodeAudioData(arrayBuffer, 
+                                               audioBuffer => {
+                                                 yodelBuffer = audioBuffer;
+                                                }, 
+                                               error => 
+                                               console.error(error)
+                                              ))
+      
+      playButton.onclick = () => play(yodelBuffer);
+  
+    function play(audioBuffer) {
+      const source = context.createBufferSource();
+      source.buffer = audioBuffer;
+      source.connect(context.destination);
+      source.start();
     }
+  
+  }
+  
+  }());
 
 </script>
 </body>
